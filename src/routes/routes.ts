@@ -1,4 +1,4 @@
-import { insertUser } from "../contollers/conroller.js";
+import { insertUser } from "../contollers/userCconroller.js";
 import { listServices, insertServices, deleteServices  } from "../contollers/servicesController.js";
 import { listMeeting, insertMeeting, deleteMeeting, editMeeting } from "../contollers/meetingsController.js";
 import express from "express";

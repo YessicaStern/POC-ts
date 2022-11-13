@@ -9,11 +9,14 @@ const insertUser = async (req: Request,res: Response) =>{
         if(!name || !cell){
             return res.sendStatus(400);
         };
-        const cellValid = cellSchema.validate(cell);
-        const nameValid = nameSchema.validate(name);
+        const cellValid = cellSchema.validate(cell,{abortEarly:false});
+        const nameValid = nameSchema.validate(name,{abortEarly:false});
         
-        if(nameValid.error || cellValid.error){
-            return res.sendStatus(400);
+        if(nameValid.error){
+            return res.send(nameValid.error.details[0].message);
+        };
+        if(cellValid.error){
+            return res.send(cellValid.error.details[0].message);
         };
         insertUserRepository(nameValid.value,cellValid.value);
         return res.sendStatus(200);
