@@ -27,7 +27,7 @@ const validUserDateHour = async (req:Request, res:Response, next:NextFunction)=>
         if((newHour >= 800 && newHour <= 1130)||(newHour >= 1300 && newHour <= 1730)){
             res.locals.body = req.body;
             return next();
-        }
+        };
         return res.status(400).send({message: "invalid time"});
     }catch(err){
         return res.status(500).send(err.message);
@@ -40,7 +40,7 @@ const userGod = async (req:Request, res: Response, next: NextFunction)=>{
         const response = (await userGodRepository(id,userId)).rows;
         if(!response[0]){
             return res.status(404).send({message: "meeting not found"})
-        }
+        };
         return next();
     }catch(err){
         return res.status(500).send(err.message);

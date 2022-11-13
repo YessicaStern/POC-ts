@@ -4,5 +4,9 @@ type Service ={
     price:number
 };
 type ServiceOrEmpty = Partial<Service>;
-
-export{ Service, ServiceOrEmpty }
+type User = {
+    id: number,
+    name: string,
+    cell: number
+};
+export{ Service, ServiceOrEmpty, User }

@@ -10,22 +10,22 @@ const { Pool }= pg;
 //     database: 'poc'
 
 // });
-// const connection = new Pool({
-//     host: 'ec2-52-1-17-228.compute-1.amazonaws.com',
-//     port: '5432',
-//     user: 'lyqoqlvlcggmws',
-//     password: 'e18d4024b6fdf9daaaa2321ee7987dee2b83ae7b166c0cff8ef52f5bfa8076ae',
-//     database: 'd25vbor2oa8kl2'
-// });
+const connection = new Pool({
+    host: 'ec2-52-1-17-228.compute-1.amazonaws.com',
+    port: '5432',
+    user: 'lyqoqlvlcggmws',
+    password: 'e18d4024b6fdf9daaaa2321ee7987dee2b83ae7b166c0cff8ef52f5bfa8076ae',
+    database: 'd25vbor2oa8kl2'
+});
 
-const databaseConfig = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-};
-const connection = new Pool(databaseConfig);
+// const databaseConfig = {
+//     connectionString: process.env.DATABASE_URL,
+//     ssl: {
+//         rejectUnauthorized: false
+//     }
+// };
+// const connection = new Pool(databaseConfig);
 
-export default connection;
+// export default connection;
 
 export {connection};
