@@ -2,6 +2,7 @@ import { route } from "./routes/routes.js";
 import express from "express";
 
 const server=express();
+server.use(express.json());
 
 server.use(route);
 
