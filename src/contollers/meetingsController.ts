@@ -2,24 +2,28 @@ import { Request,Response } from "express";
 import { insertMeetingRepository,
         listMeetingTimeRepository, 
         meetingServiceRepository,
-        getIdMeetingRepository } from "../repositorys/repositorys.js";
+        getIdMeetingRepository,
+        deleteMeetingRepository,
+        deleteMeetingServiceRepository,
+        upHourDateRepository,
+        upServiceRepository } from "../repositorys/repositorys.js";
 
 const listMeeting= (req: Request, res: Response)=>{
     return res.send("list");
 };
 
+
 const insertMeeting= async (req: Request, res: Response)=>{
     const {userId,date,hour,serviceId} = res.locals.body;
     try{
-        const meetings = (await listMeetingTimeRepository(hour)).rows;
+        const meetings = (await listMeetingTimeRepository(hour,date)).rows;
         if(meetings.length===0){
             const response = await insertMeetingRepository(userId,date,hour);
-            const getIdResponse = (await getIdMeetingRepository(userId,date,hour)).rows;;
+            const getIdResponse = (await getIdMeetingRepository(userId,date,hour)).rows;
             let meetingId = getIdResponse[0].id;
             const insertService= await meetingServiceRepository(meetingId,serviceId);
-            console.log(insertService)
-            if(response.command==="INSERT" && insertService.command==='INSERT'){
-                return res.send(201);
+            if(response.rowCount===1 && insertService.rowCount===1){
+                return res.sendStatus(201);
             };
             return res.status(400).send({message: "Bad Request"});
         } return res.status(409).send({message: "time not available"});
@@ -28,13 +32,40 @@ const insertMeeting= async (req: Request, res: Response)=>{
     };
 };
 
-const deleteMeeting= (req: Request, res: Response)=>{
-    
-    return res.send("delete");
+
+const deleteMeeting= async (req: Request, res: Response)=>{
+    const {id}= req.body;
+    try {
+        const response = (await deleteMeetingServiceRepository(id));
+        if(response.rowCount===1){
+            const response2 = (await deleteMeetingRepository(id));
+            if(response2.rowCount===1){
+                return res.sendStatus(200);
+            }
+            return res.status(400).send({message: "error when deleting "});
+        }
+        return res.status(400).send({message: "error when deleting "});
+    }catch(err){
+        return res.status(500).send(err.message);
+    };
 };
 
-const editMeeting= (req: Request, res: Response)=>{
-    return res.send("edit");
+
+const editMeeting= async(req: Request, res: Response)=>{
+    const {id, hour,date,serviceId} =req.body;
+    try{
+        const upHourDate = await upHourDateRepository(hour,date,id);
+        if(upHourDate.rowCount===1){
+            const upService = await upServiceRepository(serviceId,id);
+            if(upService.rowCount===1){
+                return res.sendStatus(200);
+            };
+            return res.status(400).send({messagem: "error update"});
+        } ;
+        return res.status(400).send({messagem: "error update"});    
+    }catch(err){
+        return res.status(500).send(err.message);
+    };
 };
 
 export {listMeeting, insertMeeting, deleteMeeting, editMeeting}

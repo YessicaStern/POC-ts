@@ -34,8 +34,8 @@ const insertMeetingRepository = (userId:number, date:string, hour:string): Promi
     return connection.query(`INSERT INTO meetings ("userId",date,hour) VALUES ($1,$2,$3)`,
     [userId,date,hour]);
 };
-const listMeetingTimeRepository = (hour:string):Promise<QueryResult<string>> => {
-    return (connection.query(`SELECT * FROM meetings WHERE hour = $1`,[hour]));
+const listMeetingTimeRepository = (hour:string,date:string):Promise<QueryResult<string>> => {
+    return (connection.query(`SELECT * FROM meetings WHERE hour = $1 AND date =$2`,[hour,date]));
 };
 const meetingServiceRepository = (meetingId:number,serviceID:number):Promise<QueryResult<string>>=>{
     return (connection.query(`INSERT INTO meetingService ("meetingId", "serviceId") VALUES ($1,$2)`,[meetingId,serviceID]));
@@ -47,6 +47,26 @@ const getIdMeetingRepository= (userId:number, date:string, hour:string): Promise
 const getServiceId = (id:number):Promise<QueryResult<any>>=>{
     return (connection.query(`SELECT * FROM services WHERE id=$1`,[id]));
 };
+const deleteMeetingServiceRepository = (id:number):Promise<QueryResult<string>>=>{
+    return (connection.query(`DELETE FROM meetingService WHERE id=$1`,[id]));
+};
+
+const deleteMeetingRepository = (id:number):Promise<QueryResult<string>>=>{
+    return (connection.query(`DELETE FROM meetings WHERE id=$1`,[id]));
+};
+
+const userGodRepository= (id:number,userID:number):Promise<QueryResult<string>>=>{
+    return (connection.query(`SELECT * FROM meetings WHERE id=$1 AND "userId"=$2`,[id,userID]));
+};
+
+const upHourDateRepository =(hour:string,date:string,id:number):Promise<QueryResult<string>>=>{
+    return (connection.query(`UPDATE meetings SET hour=$1 , date=$2 WHERE id=$3`,[hour,date,id]));
+};
+
+const upServiceRepository= (serviceId:number, id:number):Promise<QueryResult<string>>=>{
+    return (connection.query(`UPDATE meetingService SET "serviceId"=$1 WHERE "meetingId"=$2`,[serviceId, id]));
+};
+
 
 export {insertUserRepository, 
         insertServicesRepository,
@@ -57,5 +77,10 @@ export {insertUserRepository,
         listMeetingTimeRepository,
         meetingServiceRepository,
         getIdMeetingRepository,
-        getServiceId
+        getServiceId,
+        deleteMeetingRepository,
+        deleteMeetingServiceRepository,
+        userGodRepository,
+        upHourDateRepository,
+        upServiceRepository
     };

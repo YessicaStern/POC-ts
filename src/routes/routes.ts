@@ -3,7 +3,7 @@ import { listServices, insertServices, deleteServices  } from "../contollers/ser
 import { listMeeting, insertMeeting, deleteMeeting, editMeeting } from "../contollers/meetingsController.js";
 import express from "express";
 
-import { validUserDateHour } from "../middlewares/middlewares.js";
+import { userGod, validUserDateHour } from "../middlewares/middlewares.js";
 
 const route= express.Router();
 
@@ -15,8 +15,8 @@ route.delete("/services", deleteServices ); //deleta serviços pelo id
 
 route.get("/meeting", listMeeting);
 route.post("/meeting", validUserDateHour ,insertMeeting);
-route.delete("/meeting", deleteMeeting);
-route.put("/meeting", editMeeting);
+route.delete("/meeting", userGod ,deleteMeeting);
+route.put("/meeting", userGod , validUserDateHour ,editMeeting);
 
 
 export {route};
