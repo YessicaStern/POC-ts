@@ -6,10 +6,13 @@ import { insertMeetingRepository,
         deleteMeetingRepository,
         deleteMeetingServiceRepository,
         upHourDateRepository,
-        upServiceRepository } from "../repositorys/repositorys.js";
+        upServiceRepository,
+        listMeetingRepository
+     } from "../repositorys/repositorys.js";
 
-const listMeeting= (req: Request, res: Response)=>{
-    return res.send("list");
+const listMeeting= async (req: Request, res: Response)=>{
+    const response = (await listMeetingRepository()).rows;
+    return res.send(response);    
 };
 
 

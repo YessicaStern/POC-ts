@@ -59,6 +59,16 @@ const upServiceRepository= (serviceId:number, id:number):Promise<QueryResult<str
     return (connection.query(`UPDATE meetingService SET "serviceId"=$1 WHERE "meetingId"=$2`,[serviceId, id]));
 };
 
+const listMeetingRepository = ():Promise<QueryResult<any>>=>{
+    return (connection.query(`
+    SELECT 
+    users.name As user,services.name As service,services.price,meetings.date, meetings.hour, users.cell
+    FROM meetingService 
+    JOIN meetings ON meetings.id=meetingService."meetingId"
+    JOIN services ON services.id=meetingService."serviceId"
+    JOIN users ON users.id= meetings."userId"
+    `));
+}
 
 export {insertUserRepository, 
         insertServicesRepository,
@@ -74,5 +84,6 @@ export {insertUserRepository,
         deleteMeetingServiceRepository,
         userGodRepository,
         upHourDateRepository,
-        upServiceRepository
+        upServiceRepository,
+        listMeetingRepository
     };

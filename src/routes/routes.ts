@@ -7,11 +7,11 @@ import { userGod, validUserDateHour } from "../middlewares/middlewares.js";
 
 const route= express.Router();
 
-route.post("/", insertUser ); //registra nome e telefone do usuário
+route.post("/", insertUser ); 
 
-route.get("/services", listServices ); //lista os serviços disponíveis
-route.post("/services", insertServices ); // inseri os serviços
-route.delete("/services", deleteServices ); //deleta serviços pelo id
+route.get("/services", listServices );
+route.post("/services", insertServices );
+route.delete("/services", deleteServices ); 
 
 route.get("/meeting", listMeeting);
 route.post("/meeting", validUserDateHour ,insertMeeting);
